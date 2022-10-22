@@ -11,6 +11,34 @@ rating:
 reviews:
     css: '#acrCustomerReviewText'
     type: Text
+price:
+    css: 'span.a-offscreen'
+    type: Text
+detail:
+    css: '#productFactsDesktopExpander > div.a-expander-content.a-expander-partial-collapse-content > div'
+    multiple: true
+    type: Text
+    children:
+        field:
+            css: 'div > div.a-fixed-left-grid-col.a-col-left > span'
+            type: Text
+        value:
+            css: 'div > div.a-fixed-left-grid-col.a-col-right > span'
+            type: Text
+        about_this_item:
+            css: 'ul > li > span'
+            type: Text
+extra_detail:
+    css: '#detailBullets_feature_div > ul > li'
+    multiple: true
+    type: Text
+    children:
+        field:
+            css: 'span > span.a-text-bold'
+            type: Text
+        value:
+            css: 'span > span:nth-child(2)'
+            type: Text
 variants:
     css: 'li.swatchAvailable'
     multiple: true

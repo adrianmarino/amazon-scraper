@@ -5,14 +5,31 @@ import random
 
 class ProductDetailScrapper(Scrapper):
     def __init__(self, selector_file): super().__init__(selector_file)
-    def scrape(self, url, retry=10):
+    def scrape(self, url):
         detail = super().scrape(
             url, 
             retry_condition_fn=lambda data: 'description' not in data or data['description'] == None
         )
-        detail['images']  = list(json.loads(detail['images']).keys())
-        detail['rating']  = float(detail['rating'].split('out of 5 stars')[0])
-        detail['reviews'] = int(detail['reviews'].split('ratings')[0].strip().replace(',', ''))
+        if detail == None:
+            return detail
+
+        if 'images' in detail:
+            detail['images']  = list(json.loads(detail['images']).keys())
+
+        if 'rating' in detail:
+            detail['rating']  = float(detail['rating'].split('out of 5 stars')[0])
+
+        if 'price' in detail:
+            detail['price']  = float(detail['price'].replace('$', ''))
+
+        if 'reviews' in detail:
+            detail['reviews'] = int(detail['reviews'].split('ratings')[0].strip().replace(',', ''))
+
+        if 'extra_detail' in detail:
+            for item in detail['extra_detail']:
+                item['field'] = item['field'].split('\n')[0].strip()
+                item['value'] = item['value'].split('\n')[0].strip()
+
         return detail
 
 
@@ -41,7 +58,9 @@ with open("product_detail_urls.txt",'r') as urls, open('product_details.json','w
         
         delay = random.choice(DELAYS)
         print(f'Wait {delay} seconds...')
-        sleep(delay)
+
+        if len(url) > 1:
+            sleep(delay)
 
     outfile.write(json.dumps({'products': details}, indent=2))
 

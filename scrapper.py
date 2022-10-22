@@ -34,15 +34,21 @@ class Scrapper:
         self.headers     = headers
         self.extractor   = Extractor.from_yaml_file(selector_file)
 
-    def scrape(self, url, retry_condition_fn=lambda data: False, retry=10):
-        retry_time = 1
-        while retry_time <= retry:
+    def scrape(
+        self, 
+        url, 
+        retry_condition_fn = lambda data: False, 
+        retry_multiplier   = 4,
+        max_retry          = 10, 
+        retry_start_time   = 5
+    ):
+        retry_count = 1
+        retry_time = retry_start_time
+        while retry_count <= max_retry:
                 self.headers['user-agent'] = random.choice(self.user_agents)
 
-                # print('Headers:', json.dumps(self.headers, indent=2))
-
                 # Download the page using requests
-                print("Downloading %s"%url)
+                print(f'Downloading {url},  user-agent: {self.headers["user-agent"]}')
                 r = requests.get(url, headers=self.headers)
 
                 # Simple check to check if page was blocked (Usually 503)
@@ -57,9 +63,10 @@ class Scrapper:
                 data = self.extractor.extract(r.text)
 
                 if retry_condition_fn(data):
-                    product_id = url.split('/')[-1]
-                    print(f'Retry get {product_id} product detail after {retry_time} seconds...')
+                    print(f'Retry({retry_count}) get {url} product detail after {retry_time} seconds...')
                     sleep(retry_time)
-                    retry_time *= 2
+                    retry_time *= retry_multiplier
+
+                    retry_count += 1
                 else:
                     return data
