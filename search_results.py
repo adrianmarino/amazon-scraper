@@ -2,17 +2,17 @@ from selectorlib import Extractor
 import requests 
 import json 
 from time import sleep
-
+import json
 
 # Create an Extractor by reading from the YAML file
-e = Extractor.from_yaml_file('selectors.yml')
+e = Extractor.from_yaml_file('search_results_selectors.yml')
 
 def scrape(url):  
 
     headers = {
         'dnt': '1',
         'upgrade-insecure-requests': '1',
-        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36',
+        'user-agent': 'Chrome/83.0.4103.61',
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
         'sec-fetch-site': 'same-origin',
         'sec-fetch-mode': 'navigate',
@@ -36,11 +36,16 @@ def scrape(url):
     return e.extract(r.text)
 
 # product_data = []
-with open("urls.txt",'r') as urllist, open('output.jsonl','w') as outfile:
+with open("search_results_urls.txt",'r') as urllist, open('search_results_output.json','w') as outfile:
+    products = []
+
     for url in urllist.read().splitlines():
-        data = scrape(url) 
-        if data:
-            json.dump(data,outfile)
-            outfile.write("\n")
-            # sleep(5)
-    
+        results = scrape(url)
+        if results:
+            for product in results['products']:
+                print("Saving Product: %s"%product['title'])
+                products.append(product)
+
+        sleep(5)
+
+    outfile.write(json.dumps({'products': products}, indent=2))

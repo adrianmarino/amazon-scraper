@@ -1,0 +1,26 @@
+description:
+    css: '#productDescription'
+    type: Text
+images:
+    css: '.imgTagWrapper img'
+    type: Attribute
+    attribute: data-a-dynamic-image
+rating:
+    css: '#acrPopover > span.a-declarative > a > i.a-icon.a-icon-star.a-star-4-5 > span'
+    type: Text
+reviews:
+    css: '#acrCustomerReviewText'
+    type: Text
+variants:
+    css: 'li.swatchAvailable'
+    multiple: true
+    type: Text
+    children:
+        url:
+            css: 'li.swatchAvailable'
+            type: Attribute
+            attribute: data-dp-url
+        id:
+            css: 'li.swatchAvailable'
+            type: Attribute
+            attribute: data-defaultasin

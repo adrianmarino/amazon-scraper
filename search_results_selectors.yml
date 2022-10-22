@@ -8,8 +8,16 @@ products:
             css: 'h2 a.a-link-normal.a-text-normal'
             xpath: null
             type: Text
+        brand:
+            css: 'h5 span.a-size-base-plus.a-color-base'
+            xpath: null
+            type: Text
+        image:
+            css: 'img:nth-of-type(1)'
+            type: Attribute
+            attribute: src
         url:
-            css: 'h2 a.a-link-normal.a-text-normal'
+            css: 'span a.a-link-normal.s-no-outline'
             xpath: null
             type: Link
         rating:
@@ -21,7 +29,7 @@ products:
             css: 'div.a-row.a-size-small span:nth-of-type(2)'
             xpath: null
             type: Attribute
-            attribute: aria-label
+            attribute: aria-label            
         price:
             css: 'span.a-price:nth-of-type(1) span.a-offscreen'
             xpath: null
