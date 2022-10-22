@@ -6,19 +6,15 @@ import random
 class ProductDetailScrapper(Scrapper):
     def __init__(self, selector_file): super().__init__(selector_file)
     def scrape(self, url, retry=10):
-        retry_time = 1
-        while retry_time <= retry:
-            detail = super().scrape(url)
-            if 'description' in detail and detail['description'] != None:
-                detail['images']  = list(json.loads(detail['images']).keys())
-                detail['rating']  = float(detail['rating'].split('out of 5 stars')[0])
-                detail['reviews'] = int(detail['reviews'].split('ratings')[0].strip().replace(',', ''))
-                return detail
-            else:
-                product_id = url.split('/')[-1]
-                print(f'Retry get {product_id} product detail after {retry_time} seconds...')
-                sleep(retry_time)
-                retry_time *= 2
+        detail = super().scrape(
+            url, 
+            retry_condition_fn=lambda data: 'description' not in data or data['description'] == None
+        )
+        detail['images']  = list(json.loads(detail['images']).keys())
+        detail['rating']  = float(detail['rating'].split('out of 5 stars')[0])
+        detail['reviews'] = int(detail['reviews'].split('ratings')[0].strip().replace(',', ''))
+        return detail
+
 
 BASE_URL='https://www.amazon.com'
 

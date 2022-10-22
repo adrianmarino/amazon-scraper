@@ -2,6 +2,7 @@ from selectorlib import Extractor
 import requests 
 import json 
 import random
+from time import sleep
 
 
 class Scrapper:
@@ -33,22 +34,32 @@ class Scrapper:
         self.headers     = headers
         self.extractor   = Extractor.from_yaml_file(selector_file)
 
-    def scrape(self, url):
-        self.headers['user-agent'] = random.choice(self.user_agents)
+    def scrape(self, url, retry_condition_fn=lambda data: False, retry=10):
+        retry_time = 1
+        while retry_time <= retry:
+                self.headers['user-agent'] = random.choice(self.user_agents)
 
-        # print('Headers:', json.dumps(self.headers, indent=2))
+                # print('Headers:', json.dumps(self.headers, indent=2))
 
-        # Download the page using requests
-        print("Downloading %s"%url)
-        r = requests.get(url, headers=self.headers)
+                # Download the page using requests
+                print("Downloading %s"%url)
+                r = requests.get(url, headers=self.headers)
 
-        # Simple check to check if page was blocked (Usually 503)
-        if r.status_code > 500:
-            if "To discuss automated access to Amazon data please contact" in r.text:
-                print("Page %s was blocked by Amazon. Please try using better proxies\n"%url)
-            else:
-                print("Page %s must have been blocked by Amazon as the status code was %d"%(url,r.status_code))
-            return None
+                # Simple check to check if page was blocked (Usually 503)
+                if r.status_code > 500:
+                    if "To discuss automated access to Amazon data please contact" in r.text:
+                        print("Page %s was blocked by Amazon. Please try using better proxies\n"%url)
+                    else:
+                        print("Page %s must have been blocked by Amazon as the status code was %d"%(url,r.status_code))
+                    return None
 
-        # Pass the HTML of the page and create 
-        return self.extractor.extract(r.text)
+                # Pass the HTML of the page and create 
+                data = self.extractor.extract(r.text)
+
+                if retry_condition_fn(data):
+                    product_id = url.split('/')[-1]
+                    print(f'Retry get {product_id} product detail after {retry_time} seconds...')
+                    sleep(retry_time)
+                    retry_time *= 2
+                else:
+                    return data
