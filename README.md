@@ -11,9 +11,35 @@ There are three simple scrapers in this project.
 
 Note: A completely web browser based commercial version of these scrapers are available in [ScrapeHero Marketplace](https://www.scrapehero.com/marketplace/)
 
+## Requisites
+
+* [anaconda](https://www.anaconda.com/products/individual) / [miniconda](https://docs.conda.io/en/latest/miniconda.html)
+
+## Setup
+
+**Step 1**: Clone repo.
+
+```bash
+$ git clone https://github.com/adrianmarino/amazon-scraper.git
+$ cd amazon-scraper
+```
+
+**Step 2**: Create environment.
+
+```bash
+$ cd amazon-scraper
+$ conda env create -f environment.yml
+```
+
 ## Usage
 
-**Step 1:**: Configure fiels to scrap into config files:
+**Step 1**: Enable project environment.
+
+```bash
+$ conda activate amazon-scraper
+```
+
+**Step 2:**: Configure fiels to scrap into config files:
 
 * `config/product_detail_selectors.yml`: Map ccs/xpath selectors to json fields for product details scrapping.
 * `config/product_detail_urls`: Urls used by `bin/product_detail.py` scrapper.
@@ -23,7 +49,7 @@ Note: A completely web browser based commercial version of these scrapers are av
 **Note**: `bin/search_product_detail.py` get urls specified into `config/search_results_urls` and use both `config/search_results_selectors.yml` and 
 `config/product_detail_selectors.yml` to scrap product details. The result is a file by product in `output` path.
 
-**Step 2:** From terminal execute any of next commands:
+**Step 3:** From terminal execute any of next commands:
 
 ```bash
 $ bin/product_detail.py
@@ -37,4 +63,4 @@ $ bin/search_result.py
 $ bin/product_search_result_scrapper.py
 ```
 
-**Step 3:**: Scrapped data is downloaded into `output` directory. One file by product details and one file by search results. 
+**Step 4:**: Scrapped data is downloaded into `output` directory. One file by product details and one file by search results. 
