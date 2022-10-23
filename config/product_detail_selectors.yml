@@ -18,6 +18,9 @@ rating:
 reviews:
     css: '#acrCustomerReviewText'
     type: Text
+price_range:
+    css: '#corePrice_desktop > div > table'
+    type: Text
 price:
     css: '#price_inside_buybox'
     type: Text

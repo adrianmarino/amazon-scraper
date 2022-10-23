@@ -13,7 +13,7 @@ class ScrapperFactory:
     def productSearchResult():
         return Scrapper(
             selector_file = f'{CONFIG_PATH}/product_search_results_selectors.yml',
-            transform_fn  = lambda data: Transform(data).rating().data,
+            transform_fn  = lambda d: Transform(d).url().price().rating().get(),
             proxies       = PROXIES
         )
 
@@ -21,6 +21,6 @@ class ScrapperFactory:
     def productDetail():
         return Scrapper(
             selector_file = f'{CONFIG_PATH}/product_detail_selectors.yml',
-            transform_fn  = lambda data: Transform(data).images().rating().price().reviews().data,
+            transform_fn  = lambda d: Transform(d).variants().images().rating().price_range().price().reviews().get(),
             proxies       = PROXIES
         )

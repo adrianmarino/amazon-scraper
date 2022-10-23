@@ -7,6 +7,14 @@ from fake_useragent import UserAgent
 import logging
 
 
+
+class ScrapperResult:
+    def __init__(self, json=None, html=None):
+        self.json = json,
+        self.html = html
+    def empty(self): self.json == None
+
+
 class Scrapper:
     def __init__(
         self,
@@ -55,18 +63,17 @@ class Scrapper:
         retry_count = 1
         retry_time = retry_start_time
         while retry_count <= max_retry:
-                r = self.__get(url)
+                response = self.__get(url)
 
                 # Simple check to check if page was blocked (Usually 503)
-                if r.status_code > 500:
-                    if "To discuss automated access to Amazon data please contact" in r.text:
+                if response.status_code > 500:
+                    if "To discuss automated access to Amazon data please contact" in response.text:
                         logging.error("Page %s was blocked by Amazon. Please try using better proxies\n"%url)
                     else:
-                        logging.error("Page %s must have been blocked by Amazon as the status code was %d"%(url,r.status_code))
+                        logging.error("Page %s must have been blocked by Amazon as the status code was %d"%(url, response.status_code))
                     return None
 
-                # Pass the HTML of the page and create
-                data = self.extractor.extract(r.text)
+                data = self.extractor.extract(response.text)
 
                 if retry_condition_fn(data):
                     logging.info(f'Retry({retry_count}) get {url} product detail after {retry_time} seconds...')
@@ -77,6 +84,9 @@ class Scrapper:
                     retry_count += 1
                 elif data == None:
                     logging.error('Empty data!')
-                    return data
+                    return ScrapperResult()
                 else:
-                    return self.transform_fn(data)
+                    return ScrapperResult(
+                        json = self.transform_fn(data), 
+                        html = response.text
+                    )
