@@ -1,0 +1,10 @@
+name: amazon-scrapper
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - requests
+  - pip
+  - pip:
+      - selectorlib
+      - fake-useragent
