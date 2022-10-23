@@ -1,6 +1,6 @@
 # Amazon Scraper using Selectorlib 
 
-A simple amazon scraper to extract product details and prices from Amazon.com using Python Requests and Selectorlib. 
+A simple amazon scraper to extract product details and prices from Amazon.com using Python Requests and **Selectorlib**. 
 
 Full article at [ScrapeHero Tutorials](https://www.scrapehero.com/tutorial-how-to-scrape-amazon-product-details-using-python-and-selectorlib/)
 
@@ -39,7 +39,7 @@ $ conda env create -f environment.yml
 $ conda activate amazon-scraper
 ```
 
-**Step 2:**: Configure fiels to scrap into config files:
+**Step 2:**: Configure fields to scrap into config files:
 
 * `config/product_detail_selectors.yml`: Map ccs/xpath selectors to json fields for product details scrapping.
 * `config/product_detail_urls`: Urls used by `bin/product_detail.py` scrapper.
@@ -63,4 +63,4 @@ $ bin/search_result.py
 $ bin/product_search_result_scrapper.py
 ```
 
-**Step 4:**: Scrapped data is downloaded into `output` directory. One file by product details and one file by search results. 
+**Step 4:** Scrapped data is downloaded into `output` directory. One file by product details and one file by search results. 

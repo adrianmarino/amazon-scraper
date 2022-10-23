@@ -1,3 +1,0 @@
-selectorlib
-requests
-fake-useragent
