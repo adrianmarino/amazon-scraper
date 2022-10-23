@@ -12,7 +12,10 @@ class Scrapper:
         self,
         selector_file,
         transform_fn = lambda data: data,
-        proxy        = "http://40.129.203.4:8080",
+        proxies = {
+            'http':  'http://45.79.110.81:80',
+            'https': 'http://170.39.193.236:3128'
+        },
         headers = {
             'dnt': '1',
             'upgrade-insecure-requests': '1',
@@ -27,9 +30,18 @@ class Scrapper:
         self.headers      = headers
         self.extractor    = Extractor.from_yaml_file(selector_file)
         self.user_agent   = UserAgent()
-        self.proxies      = { "https": proxy}
         self.transform_fn = transform_fn
+
+        if proxies:
+            self.session = requests.Session()
+            self.session.proxies = proxies
         
+    
+    def __get(self, url):
+        logging.info(f'Downloading {url}') 
+        self.headers['user-agent'] = self.user_agent.random
+        return self.session.get(url, headers=self.headers) if self.session else requests.get(url, headers=self.headers)
+
 
     def scrape(
         self, 
@@ -43,32 +55,28 @@ class Scrapper:
         retry_count = 1
         retry_time = retry_start_time
         while retry_count <= max_retry:
-                self.headers['user-agent'] = self.user_agent.random
-
-                # Download the page using requests
-                print(f'Downloading {url}') 
-                r = requests.get(url, headers=self.headers) #, proxies=self.proxies)
+                r = self.__get(url)
 
                 # Simple check to check if page was blocked (Usually 503)
                 if r.status_code > 500:
                     if "To discuss automated access to Amazon data please contact" in r.text:
-                        print("Page %s was blocked by Amazon. Please try using better proxies\n"%url)
+                        logging.error("Page %s was blocked by Amazon. Please try using better proxies\n"%url)
                     else:
-                        print("Page %s must have been blocked by Amazon as the status code was %d"%(url,r.status_code))
+                        logging.error("Page %s must have been blocked by Amazon as the status code was %d"%(url,r.status_code))
                     return None
 
-                # Pass the HTML of the page and create 
+                # Pass the HTML of the page and create
                 data = self.extractor.extract(r.text)
 
                 if retry_condition_fn(data):
-                    print(f'Retry({retry_count}) get {url} product detail after {retry_time} seconds...')
+                    logging.info(f'Retry({retry_count}) get {url} product detail after {retry_time} seconds...')
                     sleep(retry_time)
                     retry_time *= retry_multiplier
                     if retry_time > max_retry_time:
                         retry_time = max_retry_time
                     retry_count += 1
                 elif data == None:
-                    logging.warning('Empty data!')
+                    logging.error('Empty data!')
                     return data
                 else:
                     return self.transform_fn(data)

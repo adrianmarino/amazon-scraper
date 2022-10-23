@@ -15,7 +15,6 @@ CONFIG_PATH = 'config'
 OUTPUT_PATH = 'output'
 scrapper    = ScrapperFactory.productSearchResult()
 
-
 def save(products):
     ut.save_json(f'{OUTPUT_PATH}/product_search_results_output', {'products': products})
 

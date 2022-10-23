@@ -62,3 +62,9 @@ $ bin/product_detail_spider.py
 ```
 
 **Step 4:** Scrapped data is downloaded into `output` directory. One file by product details and one file by search results. 
+
+
+## Proxies
+
+* [Proxies list](https://free-proxy-list.net/)
+* Setup proxies under `src/scrapper/scrapper_factory.py`
