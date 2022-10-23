@@ -1,6 +1,6 @@
 # Amazon Spider Scraper using Selectorlib 
 
-A simple amazon scraper to extract product details and prices from Amazon.com using Python Requests and **Selectorlib**. 
+A simple amazon scraper to extract product details and prices from Amazon.com using Python Requests and **[Selectorlib](https://selectorlib.readthedocs.io/en/latest/)**. 
 
 Full article at [ScrapeHero Tutorials](https://www.scrapehero.com/tutorial-how-to-scrape-amazon-product-details-using-python-and-selectorlib/)
 
@@ -8,8 +8,6 @@ There are three simple scrapers in this project.
 1. Amazon Product Detail Page Scraper `bin/product_detail.py`
 1. Amazon Search Results Page Scraper `bin/product_search_results.py`
 1. Amazon Product Detail Page spider Scraper `bin/product_detail_spider.py`
-
-Note: A completely web browser based commercial version of these scrapers are available in [ScrapeHero Marketplace](https://www.scrapehero.com/marketplace/)
 
 ## Requisites
 
