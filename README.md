@@ -37,4 +37,4 @@ $ bin/search_result.py
 $ bin/product_search_result_scrapper.py
 ```
 
-**Step 3:**: Scrapped data is downloaded into output **directory**. One file by product details and one file by search results. 
+**Step 3:**: Scrapped data is downloaded into `output` directory. One file by product details and one file by search results. 
