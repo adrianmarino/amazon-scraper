@@ -8,7 +8,7 @@ class ScrapperFactory:
     @staticmethod
     def productSearchResult():
         return Scrapper(
-            selector_file = f'{CONFIG_PATH}/search_results_selectors.yml',
+            selector_file = f'{CONFIG_PATH}/product_search_results_selectors.yml',
             transform_fn  = lambda data: Transform(data).rating().data
         )
 

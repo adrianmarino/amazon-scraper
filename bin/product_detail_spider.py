@@ -18,7 +18,7 @@ detail_scrapper = ScrapperFactory.productDetail()
 result_scrapper = ScrapperFactory.productSearchResult()
 
 
-with open(f'{CONFIG_PATH}/search_results_urls', 'r') as urls:
+with open(f'{CONFIG_PATH}/product_search_results_urls', 'r') as urls:
     for url in urls.read().splitlines():
         results = result_scrapper.scrape(url)
 

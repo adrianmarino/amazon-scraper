@@ -17,10 +17,10 @@ scrapper    = ScrapperFactory.productSearchResult()
 
 
 def save(products):
-    ut.save_json(f'{OUTPUT_PATH}/search_results_output', {'products': products})
+    ut.save_json(f'{OUTPUT_PATH}/product_search_results_output', {'products': products})
 
 
-with open(f'{CONFIG_PATH}/search_results_urls','r') as urls:
+with open(f'{CONFIG_PATH}/product_search_results_urls','r') as urls:
     products = []
     for url in urls.read().splitlines():
         results = scrapper.scrape(url)
