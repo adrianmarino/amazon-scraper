@@ -13,7 +13,17 @@ Note: A completely web browser based commercial version of these scrapers are av
 
 ## Usage
 
-From a terminal 
+**Step 1:**: Configure fiels to scrap into config files:
+
+* `config/product_detail_selectors.yml`: Map ccs/xpath selectors to json fields for product details scrapping.
+* `config/product_detail_urls`: Urls used by `bin/product_detail.py` scrapper.
+* `config/search_results_selectors.yml`: Map ccs/xpath selectors to json fields for product search result scrapping.
+* `config/search_results_urls`: Urls used by `bin/product_detail.py` and `bin/search_product_detail.py` scrapper.
+
+**Note**: `bin/search_product_detail.py` get urls specified into `config/search_results_urls` and use both `config/search_results_selectors.yml` and 
+`config/product_detail_selectors.yml` to scrap product details. The result is a file by product in `output` path.
+
+**Step 2:** From terminal execute any of next commands:
 
 ```bash
 $ bin/product_detail.py
@@ -26,3 +36,5 @@ $ bin/search_result.py
 ```bash
 $ bin/product_search_result_scrapper.py
 ```
+
+**Step 3:**: Scrapped data is downloaded into output **directory**. One file by product details and one file by search results. 
