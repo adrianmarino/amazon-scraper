@@ -1,4 +1,4 @@
-# Amazon Scraper using Selectorlib 
+# Amazon Spider Scraper using Selectorlib 
 
 A simple amazon scraper to extract product details and prices from Amazon.com using Python Requests and **Selectorlib**. 
 
