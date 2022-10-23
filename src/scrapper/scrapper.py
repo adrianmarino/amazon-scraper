@@ -4,16 +4,15 @@ import json
 import random
 from time import sleep
 from fake_useragent import UserAgent
-
-
-exist_field = lambda field: lambda data: field not in data or data[field] == None
+import logging
 
 
 class Scrapper:
     def __init__(
         self,
         selector_file,
-        proxy       = "http://40.129.203.4:8080",
+        transform_fn = lambda data: data,
+        proxy        = "http://40.129.203.4:8080",
         headers = {
             'dnt': '1',
             'upgrade-insecure-requests': '1',
@@ -25,10 +24,11 @@ class Scrapper:
             'referer': 'https://www.amazon.com/',
             'accept-language': 'en-GB,en-US;q=0.9,en;q=0.8'        }
     ):
-        self.headers     = headers
-        self.extractor   = Extractor.from_yaml_file(selector_file)
-        self.user_agent  = UserAgent()
-        self.proxies     = { "https": proxy}
+        self.headers      = headers
+        self.extractor    = Extractor.from_yaml_file(selector_file)
+        self.user_agent   = UserAgent()
+        self.proxies      = { "https": proxy}
+        self.transform_fn = transform_fn
         
 
     def scrape(
@@ -67,5 +67,8 @@ class Scrapper:
                     if retry_time > max_retry_time:
                         retry_time = max_retry_time
                     retry_count += 1
-                else:
+                elif data == None:
+                    logging.warning('Empty data!')
                     return data
+                else:
+                    return self.transform_fn(data)
