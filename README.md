@@ -66,5 +66,7 @@ $ bin/product_detail_spider.py
 
 ## Proxies
 
-* [Proxies list](https://free-proxy-list.net/)
+* Proxies lists:
+  * [free-proxy-list](https://free-proxy-list.net/)
+  * [hidemy.name](https://hidemy.name/es/proxy-list/)
 * Setup proxies under `src/scrapper/scrapper_factory.py`
