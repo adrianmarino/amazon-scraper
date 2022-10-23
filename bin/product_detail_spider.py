@@ -40,11 +40,8 @@ with open(f'{CONFIG_PATH}/product_search_results_urls', 'r') as urls:
         if not search_result.empty():
             save_html(url, search_result.html)
 
-            for product in search_result.json[0]['products']:
-                
+            for product in search_result.json[0]['products']:                
                 detail_result = detail_scrapper.scrape(product['url'], retry_condition_fn=retry_cond)
-
-                print('detail_result:', detail_result.json)
 
                 if not detail_result.empty():
                     if 'variants' in detail_result.json[0] and detail_result.json[0]['variants']:
@@ -52,7 +49,6 @@ with open(f'{CONFIG_PATH}/product_search_results_urls', 'r') as urls:
                             variant_result = detail_scrapper.scrape(variant['url'], retry_condition_fn=retry_cond)
                             save(variant['id'], variant_result, variant=True)
                     else:
-                        print(detail_result.json[0])
                         product_id = detail_result.json[0]['id']
                         save(product_id, detail_result)
 
