@@ -20,7 +20,9 @@ class ScrapperFactory:
     @staticmethod
     def productDetail():
         return Scrapper(
-            selector_file = f'{CONFIG_PATH}/product_detail_selectors.yml',
-            transform_fn  = lambda d: Transform(d).variants().images().rating().price_range().price().reviews().get(),
-            proxies       = PROXIES
+            selector_file       = f'{CONFIG_PATH}/product_detail_selectors.yml',
+            transform_fn        = lambda d: Transform(d).variants().images().rating().price_range().price().reviews().get(),
+            proxies             = PROXIES,
+            retry_condition_fn  = lambda data: not 'description' in data
         )
+

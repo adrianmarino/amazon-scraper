@@ -21,9 +21,6 @@ reviews:
 price_range:
     css: '#corePrice_desktop > div > table'
     type: Text
-price:
-    css: '#price_inside_buybox'
-    type: Text
 variants:
     css: 'li.swatchAvailable'
     multiple: true

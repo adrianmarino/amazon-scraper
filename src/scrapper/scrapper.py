@@ -7,7 +7,6 @@ from fake_useragent import UserAgent
 import logging
 
 
-
 class ScrapperResult:
     def __init__(self, json=None, html=None):
         self.json = json,
@@ -20,6 +19,7 @@ class Scrapper:
         self,
         selector_file,
         transform_fn = lambda data: data,
+        retry_condition_fn = lambda data: False,
         proxies = {
             'http':  'http://45.79.110.81:80',
             'https': 'http://170.39.193.236:3128'
@@ -38,12 +38,12 @@ class Scrapper:
         self.headers      = headers
         self.extractor    = Extractor.from_yaml_file(selector_file)
         self.user_agent   = UserAgent()
-        self.transform_fn = transform_fn
-
+        self.transform_fn       = transform_fn
+        self.retry_condition_fn = retry_condition_fn
         if proxies:
             self.session = requests.Session()
             self.session.proxies = proxies
-        
+
     
     def __get(self, url):
         logging.info(f'Downloading {url}') 
@@ -54,7 +54,6 @@ class Scrapper:
     def scrape(
         self, 
         url, 
-        retry_condition_fn = lambda data: False, 
         retry_multiplier   = 3,
         max_retry          = 10, 
         retry_start_time   = 2,
@@ -75,7 +74,7 @@ class Scrapper:
 
                 data = self.extractor.extract(response.text)
 
-                if retry_condition_fn(data):
+                if self.retry_condition_fn(data):
                     logging.info(f'Retry({retry_count}) get {url} product detail after {retry_time} seconds...')
                     sleep(retry_time)
                     retry_time *= retry_multiplier
