@@ -33,7 +33,8 @@ class Scrapper:
             'sec-fetch-user': '?1',
             'sec-fetch-dest': 'document',
             'referer': 'https://www.amazon.com/',
-            'accept-language': 'en-GB,en-US;q=0.9,en;q=0.8'        }
+            'Accept-Language': 'en-US,en;q=0.5'
+        }
     ):
         self.headers      = headers
         self.extractor    = Extractor.from_yaml_file(selector_file)
@@ -70,7 +71,7 @@ class Scrapper:
                         logging.error("Page %s was blocked by Amazon. Please try using better proxies\n"%url)
                     else:
                         logging.error("Page %s must have been blocked by Amazon as the status code was %d"%(url, response.status_code))
-                    return None
+                    return ScrapperResult()
 
                 data = self.extractor.extract(response.text)
 
