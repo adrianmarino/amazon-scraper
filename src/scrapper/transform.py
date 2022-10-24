@@ -40,9 +40,14 @@ class Transform:
 
     def price_range(self):
         def transform(data):
-            prices = data['price_range'].split('P.when')[0].replace('Price:', '').replace('$', '').strip()
-            prices = remove_duplicate(prices).split('-') 
-            data['price_range']  = { 'from': float(prices[0].strip()), 'to': float(prices[1].strip()) }
+            prices = remove_duplicate(data['price_range'].split('P.when')[0].replace('Price:', '').replace('$', '').strip())
+
+            if  '-' in prices:
+                prices = prices.split('-') 
+                data['price_range']  = { 'from': float(prices[0].strip()), 'to': float(prices[1].strip()) }
+            else:
+                data['price_range']  = { 'from': float(prices.strip()), 'to': float(prices.strip()) }
+
         catch(transform, self.data, 'Error when transform price_range')
         return self
 
@@ -53,10 +58,16 @@ class Transform:
         catch(transform, self.data, 'Error when transform price')
         return self
 
-    def reviews(self):
+    def reviews_count(self):
         def transform(data):
-            data['reviews'] = int(data['reviews'].split('ratings')[0].strip().replace(',', ''))
-        catch(transform, self.data, 'Error when transform reviews')
+            data['reviews_count'] = int(data['reviews_count'].split('ratings')[0].strip().replace(',', ''))
+        catch(transform, self.data, 'Error when transform reviews count')
+        return self
+
+    def reviews_link(self):
+        def transform(data):
+            data['reviews_link'] = f'{BASE_URL}{data["reviews_link"]}'
+        catch(transform, self.data, 'Error when transform reviews link')
         return self
 
     def get(self): return self.data

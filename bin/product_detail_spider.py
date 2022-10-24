@@ -14,12 +14,11 @@ logging.basicConfig(level=logging.INFO)
 with open(f'{CONFIG_PATH}/product_search_results_urls', 'r') as urls:
     for url in urls.read().splitlines():
         result_scrapper = ScrapperFactory.productSearchResult()
-        detail_scrapper = ScrapperFactory.productDetail()
-
         search_result = result_scrapper.scrape(url)
         if not search_result.empty():
             save_html(url, search_result.html)
 
+            detail_scrapper = ScrapperFactory.productDetail()
             for product in search_result.json[0]['products']:                
                 detail_result = detail_scrapper.scrape(product['url'])
 

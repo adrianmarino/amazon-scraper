@@ -15,9 +15,13 @@ images:
 rating:
     css: '#acrPopover > span.a-declarative > a > i.a-icon.a-icon-star > span'
     type: Text
-reviews:
+reviews_count:
     css: '#acrCustomerReviewText'
     type: Text
+reviews_link:
+    css: '#cr-pagination-footer-0 > a'
+    type: Attribute
+    attribute: href
 price_range:
     css: '#corePrice_desktop > div > table'
     type: Text
