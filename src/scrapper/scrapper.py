@@ -47,7 +47,7 @@ class Scrapper:
 
     
     def __get(self, url):
-        logging.info(f'Downloading {url}') 
+        logging.info(f'Downloading {url}')
         self.headers['user-agent'] = self.user_agent.random
         return self.session.get(url, headers=self.headers) if self.session else requests.get(url, headers=self.headers)
 

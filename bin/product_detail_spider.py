@@ -4,7 +4,7 @@ sys.path.append('./src')
 import logging
 import utils as ut
 from scrapper import ScrapperFactory
-from save import save_json_html, save_html
+from save import save_detail_json_html, save_html
 
 
 CONFIG_PATH     = 'config'
@@ -26,10 +26,10 @@ with open(f'{CONFIG_PATH}/product_search_results_urls', 'r') as urls:
                     if 'variants' in detail_result.json[0] and detail_result.json[0]['variants']:
                         for variant in detail_result.json[0]['variants']:
                             variant_result = detail_scrapper.scrape(variant['url'])
-                            save_json_html(variant['id'], variant_result, variant=True)
+                            save_detail_json_html(variant['id'], variant_result, variant=True)
                     else:
                         product_id = detail_result.json[0]['id']
-                        save_json_html(product_id, detail_result)
+                        save_detail_json_html(product_id, detail_result)
 
         if len(url) > 1:
             ut.wait()

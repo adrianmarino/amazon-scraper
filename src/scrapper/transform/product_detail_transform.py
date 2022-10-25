@@ -5,18 +5,9 @@ import json
 BASE_URL = 'https://www.amazon.com'
 
 
-class Transform:
+class ProductDetailTransform:
     def __init__(self, data):
         self.data = data
-
-    def url(self):
-        def transform(data):
-            if 'products' in data:
-                products = data['products']
-                for p in products:
-                    p['url'] = f'{BASE_URL}{p["url"]}'
-        catch(transform, self.data, 'Error when complete product url')
-        return self
 
     def variants(self):
         def transform(data):
@@ -49,13 +40,6 @@ class Transform:
                 data['price_range']  = { 'from': float(prices.strip()), 'to': float(prices.strip()) }
 
         catch(transform, self.data, 'Error when transform price_range')
-        return self
-
-
-    def price(self):
-        def transform(data):
-            data['price']  = float(data['price'].replace('$', ''))
-        catch(transform, self.data, 'Error when transform price')
         return self
 
     def reviews_count(self):
