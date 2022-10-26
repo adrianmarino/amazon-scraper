@@ -22,8 +22,6 @@ for product_detail_path in glob.glob("output/*.json"):
     if 'reviews' in product_detail_path or 'search_results' in product_detail_path:
         continue
 
-    print(product_detail_path)
-
     with open(product_detail_path,'r') as f:
         product_detail = json.load(f)
 
@@ -31,7 +29,7 @@ for product_detail_path in glob.glob("output/*.json"):
         logging.info(f'{product_detail["id"]} already processes')
         continue
 
-    reviews = []   
+    reviews = []
     scrapper = ScrapperFactory.productReviews()
  
     if product_detail['reviews_link'] is None or product_detail['reviews_link'] == 'https://www.amazon.comNone':
@@ -40,7 +38,8 @@ for product_detail_path in glob.glob("output/*.json"):
     result = scrapper.scrape(product_detail['reviews_link'])
     pages_count = 0 
     while not result.empty() and pages_count < MAX_PAGES:
-        reviews.extend(result.json[0]['reviews'])
+        if result.json[0]['reviews']:
+            reviews.extend(result.json[0]['reviews'])
         
         if 'next_page' in result.json[0]:
             if result.json[0]['next_page'] == 'https://www.amazon.comNone':

@@ -30,7 +30,7 @@ class ScrapperFactory:
     def productSearchResult():
         return Scrapper(
             selector_file = f'{CONFIG_PATH}/product_search_results_selectors.yml',
-            transform_fn  = lambda d: ProductSearchTransform(d).url().price().rating().get(),
+            transform_fn  = lambda d: ProductSearchTransform(d).id().url().price().rating().get(),
             proxies       = PROXIES
         )
 

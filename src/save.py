@@ -11,9 +11,10 @@ def save_html(url, content):
     with open(f'{OUTPUT_PATH}/{url}.html', 'w') as f: f.write(content)
 
 
-def save_detail_json_html(product_id, result, variant=False):
-    logging.info(f'Save {product_id}(variante:{variant}) product...')    
-    filename = f'{product_id}{"_variant" if variant else ""}'
+def save_detail_json_html(product_id, result, variant_id=None):
+    filename = f'{product_id}_variant_{variant_id}' if variant_id else product_id
+
+    logging.info(f'Save {filename} product...')    
     ut.save_json(f'{OUTPUT_PATH}/{filename}', result.json[0])
     with open(f'{OUTPUT_PATH}/{filename}.html', 'w') as f: f.write(result.html)
 
