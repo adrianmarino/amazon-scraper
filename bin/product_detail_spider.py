@@ -11,6 +11,7 @@ import glob
 CONFIG_PATH     = 'config'
 logging.basicConfig(level=logging.INFO)
 
+
 product_detail_paths = glob.glob("output/*_variant_*.json")
 processed_products = [p.split('/')[1].split('_variant_')[0].strip() for p in product_detail_paths]
 processed_products.extend([p.split('/')[1].split('_variant_')[1].split('.json')[0].strip() for p in product_detail_paths])
@@ -28,7 +29,6 @@ with open(f'{CONFIG_PATH}/product_search_results_urls', 'r') as urls:
                     continue
                 processed_products.append(product['id'])
 
-                ut.wait()
                 detail_result = ScrapperFactory.productDetail().scrape(product['url'])
                 if not detail_result.empty():
                     if 'variants' in detail_result.json[0] and detail_result.json[0]['variants']:
@@ -36,10 +36,11 @@ with open(f'{CONFIG_PATH}/product_search_results_urls', 'r') as urls:
                             if variant['id'] in processed_products:
                                 logging.info(f'{variant["id"]} variant already processes')
                                 continue
-
                             variant_result = ScrapperFactory.productDetail().scrape(variant['url'])
                             save_detail_json_html(product['id'], variant_result, variant_id=variant['id'])
+                            ut.wait()
                     else:
                         save_detail_json_html(product['id'], detail_result)
+                        ut.wait()
 
             save_html(url, search_result.html)
