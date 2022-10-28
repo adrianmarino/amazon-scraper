@@ -56,23 +56,23 @@ $ conda activate amazon-scraper
 **Step 3:** From terminal execute any of next commands:
 
 ```bash
-$ bin/product_detail.py
+$ python bin/product_detail.py
 ```
 
 ```bash
-$ bin/product_reviews.py
+$ python bin/product_reviews.py
 ```
 
 ```bash
-$ bin/product_search_results.py
+$ python bin/product_search_results.py
 ```
 
 ```bash
-$ bin/product_detail_spider.py
+$ python bin/product_detail_spider.py
 ```
 
 ```bash
-$ bin/product_reviews_spider.py
+$ python bin/product_reviews_spider.py
 ```
 **Notes**
 * `bin/product_reviews_spider.py` required run `bin/product_detail_spider.py` first.
